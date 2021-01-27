@@ -1,42 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/index.css">
     <title>Chama Nasa</title>
 </head>
 
 <body>
-    <div class="container">
-        <div class="navegacao">
-            <button id="chamaNasa">Chama Nasa</button>
-            <input type="date" id="Data">
-            <div>
-                <button id="anteriorB">Anterior</button>
-                <button id="proximoB">Próximo</button>
+    <header class="container-header">
+        <div class="container-navegacao">
+            <div class="titulo">
+                <p id="titP" class="textoC"></p>
+            </div>
+            <div class="navegacao">
+                <div class="navegacao-data">
+                    <input type="date" id="Data">
+                    <button id="chamaNasa">Buscar data</button>
+                </div>
+                <div class="navegacao-botao">
+                    <button id="anteriorB">Dia anterior</button>
+                    <button id="proximoB">Próximo dia</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container-conteudo">
+        <div class="conteudo">
+            <div class="data">
+                <p id="datP" class="textoC"></p>
+            </div>
+            <div class="explicacao">
+                <p id="expP" class="textoC"></p>
+            </div>
+            <div class="imagem">
+                <img id="imgP"></img>
+            </div>
+            <div class="copyright">
+                <p class="textoC">Direitos Autorais:</p>
+                <p id="copP" class="textoC"></p>
             </div>
         </div>
     </div>
-    <div id="Conteudo">
-        <div id="Titulo">
-            <p id="titP"></p>
-        </div>
-        <div id="Data">
-            <p id="datP"></p>
-        </div>
-        <div id="Explicacao">
-            <p id="expP"></p>
-        </div>
-        <div id="Imagem">
-            <img id="imgP"></img>
-        </div>
-        <div id="Copyright">
-            <p id="copP"></p>
-        </div>
-    </div>
 
-    <script src="./script.js"></script>
+    <script src="./js/script.js"></script>
 </body>
 
 </html>

@@ -1,23 +1,41 @@
 class GalaxiaController {
-    confereDia(mes, ano) {
-        let data = new Date(ano, mes, 0);
-        return data.getDate();
-    }
     coletaData() {
         let data = document.querySelector("#Data").value;
         return data;
     }
+    dataAtual(){
+        let atual = new Date();
+        let dia = atual.getDate();
+        let mes = atual.getMonth();
+        let ano = atual.getFullYear();
+        mes++;
+        if(dia.toString().length==1){
+            dia='0'+dia;
+        }
+        if(mes.toString().length==1){
+            mes='0'+mes;
+        }
+        let dataAtual = `${ano}-${mes}-${dia}`;
+        return dataAtual;
+    }
     buscaGalaxia(data) {
         let model = new GalaxiaModel();
-        model.buscaDadosGalaxia(data);
+        model.buscaDadosGalaxia(data, () =>{
+        let view = new GalaxiaView(model.title, model.date, model.explanation, model.image, model.copyright);
+        view.mostraGalaxia();
+        });
+    }
+    confereDia(mes, ano) {
+        let data = new Date(ano, mes, 0);
+        return data.getDate();
     }
     proximaGalaxia(data) {
+        if(data==""||data==this.dataAtual()) return;
         let dataArr = data.split("-");
         // dataArr[0] é o ano
         // dataArr[1] é o mês
         // dataArr[2] é o dia
         let contDia = this.confereDia(dataArr[1], dataArr[0]);
-        console.log(contDia);
         //altera ano
         if (dataArr[1] == 12 && dataArr[2] == 31) {
             dataArr[2] = '0' + 1;
@@ -44,6 +62,7 @@ class GalaxiaController {
         this.buscaGalaxia(data);
     }
     voltaGalaxia(data) {
+        if(data=="") data = this.dataAtual();
         let dataArr = data.split("-");
         // dataArr[0] é o ano
         // dataArr[1] é o mês
@@ -73,9 +92,11 @@ class GalaxiaController {
         this.buscaGalaxia(data);
     }
 
+
 }
 
 class GalaxiaModel {
+    //comecei-!
     constructor() {
         this._title = "";
         this._date = "";
@@ -83,13 +104,22 @@ class GalaxiaModel {
         this._image = "";
         this._copyright = "";
     }
-    get tittle() {
+    get title() {
         return this._title;
+    }
+    get date() {
+        return this._date;
+    }
+    get explanation() {
+        return this._explanation;
     }
     get image() {
         return this._image;
     }
-    buscaDadosGalaxia(data) {
+    get copyright() {
+        return this._copyright;
+    }
+    buscaDadosGalaxia(data,callback) {
         let request = new XMLHttpRequest();
 
         request.open("GET", `https://api.nasa.gov/planetary/apod?api_key=YSeU2JGke6SQQ1LP50j9ReXJIB17oURCJInC8ITK&date=${data}`);
@@ -101,8 +131,7 @@ class GalaxiaModel {
                 this._explanation = response.explanation;
                 this._image = response.hdurl;
                 this._copyright = response.copyright;
-                let view = new GalaxiaView(this._title, this._date, this._explanation, this._image, this._copyright);
-                view.mostraGalaxia();
+                callback();
             }
             else {
                 console.log(request.status);
@@ -124,15 +153,16 @@ class GalaxiaView {
         this._elementoTitle.innerText = `${title}`;
         this._elementoImgDate.innerText = `${imgDate}`;
         this._elementoExplanation.innerText = `${explanation}`;
-        this._elementoCopyright.innerText = `${copyright}`;
+        if(copyright!=undefined) this._elementoCopyright.innerText = `${copyright} \u00a9`;
+        else this._elementoCopyright.innerText = `Não possui.`;
         this._elementoImage.setAttribute("src", img);
     }
     mostraGalaxia() {
-        document.querySelector("#Titulo").appendChild(this._elementoTitle);
-        document.querySelector("#Data").appendChild(this._elementoImgDate);
-        document.querySelector("#Explicacao").appendChild(this._elementoExplanation);
-        document.querySelector("#Imagem").appendChild(this._elementoImage);
-        document.querySelector("#Copyright").appendChild(this._elementoCopyright);
+        document.querySelector(".titulo").appendChild(this._elementoTitle);
+        document.querySelector(".data").appendChild(this._elementoImgDate);
+        document.querySelector(".explicacao").appendChild(this._elementoExplanation);
+        document.querySelector(".imagem").appendChild(this._elementoImage);
+        document.querySelector(".copyright").appendChild(this._elementoCopyright);
     }
 }
 
