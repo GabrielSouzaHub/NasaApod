@@ -20,10 +20,7 @@ class GalaxiaController {
     }
     buscaGalaxia(data) {
         let model = new GalaxiaModel();
-        model.buscaDadosGalaxia(data, () =>{
-        let view = new GalaxiaView(model.title, model.date, model.explanation, model.image, model.copyright);
-        view.mostraGalaxia();
-        });
+        model.buscaDadosGalaxia(data, ()=> new GalaxiaView(model.title, model.date, model.explanation, model.image, model.copyright));
     }
     confereDia(mes, ano) {
         let data = new Date(ano, mes, 0);
@@ -156,13 +153,6 @@ class GalaxiaView {
         if(copyright!=undefined) this._elementoCopyright.innerText = `${copyright} \u00a9`;
         else this._elementoCopyright.innerText = `Não possui.`;
         this._elementoImage.setAttribute("src", img);
-    }
-    mostraGalaxia() {
-        document.querySelector(".titulo").appendChild(this._elementoTitle);
-        document.querySelector(".data").appendChild(this._elementoImgDate);
-        document.querySelector(".explicacao").appendChild(this._elementoExplanation);
-        document.querySelector(".imagem").appendChild(this._elementoImage);
-        document.querySelector(".copyright").appendChild(this._elementoCopyright);
     }
 }
 
